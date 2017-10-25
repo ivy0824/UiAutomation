@@ -1,5 +1,5 @@
 const constant = {
-  host: 'http://localhost:5000/',
+  host: 'https://web-alpha.blacklake.cn/',
 };
 
 module.exports = constant;
