@@ -19,8 +19,8 @@ describe('#cooperate/productOrders/list', function () {
 
   describe('#UI test', function () {
     it('table should hava 11 th', async () => {
-      const { page, browser } = constance;
-      await page.goto(constant.host + 'cooperate/productOrders/list');
+      const { page, browser } = constance;//const page = constance.page
+      await page.goto(constant.webUrl.host + 'cooperate/productOrders/list');
       await timeout(1000);
       const ths = await page.$$('.ant-table-thead th');
       assert.equal(ths.length, 1, 'ths = 11');

@@ -1,5 +1,11 @@
-const constant = {
-  host: 'https://web-alpha.blacklake.cn/',
+const webUrl = {
+  host: 'https://web.blacklake.cn/',
 };
 
-module.exports = constant;
+const materialType = 1;
+
+module.exports = {
+  webUrl,
+  materialType,
+
+};
