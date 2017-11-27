@@ -5,7 +5,7 @@ const init = require('../../init');
 const constant = require('../../config/constant');
 const event = require('../../utils/event');
 
-const filename = path.resolve(__dirname, __filename.split('.')[0]);
+const filename = "创建暂停原因";
 
 let constance;
 describe('#knowledgeBase/createPauseCause', function () {
@@ -27,10 +27,18 @@ describe('#knowledgeBase/createPauseCause', function () {
         } = constance;	
 
         //click knowledgeBase and pausecause
-        await event.clickElement(page,'div.ant-menu-submenu-title',3);
-        await event.clickElement(page,'li.ant-menu-item', 8);
-        await event.changeUrlWait(page);
-	    console.log('click knowledgeBase and pausecause');
+        try {
+            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses", {
+                timeout: 100000
+            });
+            await page.waitForSelector(".ant-breadcrumb-link", {
+                timeout: 100000
+            });
+        } catch (e) {
+            console.error('跳转暂停原因页面错误');
+            console.error(e);
+                }
+        console.log('进入暂停原因页面');
     
         var rand = Math.random().toFixed(3);
         //创建停产原因
@@ -39,12 +47,12 @@ describe('#knowledgeBase/createPauseCause', function () {
 
         //submit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        //wait for 创建按钮 show up
-	    await page.waitForSelector('.anticon.anticon-plus');
+        //wait for 取消按钮 disappear
+        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
         //screenshot
-        await page.screenshot({path: filename + '.png'});
+        await page.screenshot({path: `images/${filename}.png`});
         //assert
-        const ths = await page.$$eval('.ant-table-row.ant-table-row-level-0>td:nth-child(1)', (divs,rand) => {
+        const result = await page.$$eval('.ant-table-row.ant-table-row-level-0>td:nth-child(1)', (divs,rand) => {
             for(let i = 0;i <divs.length;i++){
                 if (divs[i].innerText = `sRea${rand}`){
                     return divs[i].innerText;
@@ -52,7 +60,7 @@ describe('#knowledgeBase/createPauseCause', function () {
             }
                                
         },rand);
-        console.log('ths', ths);
+        console.log('result is', result);
         console.log('test end');
 	
 		})

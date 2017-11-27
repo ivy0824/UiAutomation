@@ -5,10 +5,10 @@ const init = require('../../init');
 const constant = require('../../config/constant');
 const event = require('../../utils/event');
 
-const filename = path.resolve(__dirname, __filename.split('.')[0]);
+const filename = "创建仓位";
 
 let constance;
-describe('#knowledgeBase/createCustomer', function () {
+describe('#knowledgeBase/createStorage', function () {
 	beforeEach(async() => {
 		constance = await init();
 		
@@ -19,7 +19,7 @@ describe('#knowledgeBase/createCustomer', function () {
 		await browser.close();
 	});
 
-	it('create customer successfully', async() => {
+	it('create storage successfully', async() => {
 		await timeout(1000);
 		const {
 			page,
@@ -27,31 +27,47 @@ describe('#knowledgeBase/createCustomer', function () {
         } = constance;	
 
         //click knowledgeBase and storage
-        await event.clickElement(page,'div.ant-menu-submenu-title',3);
-        await event.clickElement(page,'li.ant-menu-item', 7);
-        await event.changeUrlWait(page);
-	    console.log('click knowledgeBase and storage');
+        try {
+            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/storages", {
+                timeout: 100000
+            });
+            await page.waitForSelector(".ant-breadcrumb-link", {
+                timeout: 100000
+            });
+        } catch (e) {
+            console.error('跳转仓位页面错误');
+            console.error(e);
+                }
+        console.log('进入创建仓位页面');
     
         var rand = Math.random().toFixed(3);
 	    //创建仓位
         await event.clickElement(page,'.anticon.anticon-plus',0);
-        await event.changeUrlWait(page); 
-        await event.clickElement(page,'.ant-select-search__field',0);
-        await page.type('1thSpace1');
-        await event.clickElement(page,'.ant-select-search__field',1);
-        await page.type('2thSpace2');
-        await event.clickElement(page,'.ant-select-search__field',2);
-        await page.type('3thSpace3');
+        //输入一级仓位
+        await event.clickElementAndType(page,'.ant-input.ant-input-lg', 0,`Stor${rand}`);
+        //输入二维码
+		await event.clickElementAndType(page, '.ant-input.ant-input-lg', 1, `er${rand}`)
+		//输入备注
+		await event.clickAndType(page, '#note','我是创建仓位的备注');
 	
 	    //submmit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        event.sleep(3000)
+        await event.waitForDisappear(page,'.ant-select-search__field');
         //screenshot
-        await page.screenshot({path: filename + '.png'});
+        await page.screenshot({path: `images/${filename}.png`});
+        //wait for 取消按钮 disappear
+        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
         //assert
-        const ths = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
-        console.log(ths);
-        assert.equal(ths, `customer${rand}`,'ths = `customer${rand}`');
+        const result = await page.$$eval('.ant-table-row.ant-table-row-level-0>td:nth-child(1)', (divs,rand) => {
+            for(let i = 0;i <divs.length;i++){
+                if (divs[i].innerText = `Stor${rand}`){
+                    return divs[i].innerText;
+                }
+            }
+                               
+        },rand);
+        console.log(`result is ${result}`);
+        assert.equal(result, `Stor${rand}`,'result = `Stor${rand}`');
         console.log('test end');
 	
 		})

@@ -5,7 +5,7 @@ const init = require('../../init');
 const constant = require('../../config/constant');
 const event = require('../../utils/event');
 
-const filename = path.resolve(__dirname, __filename.split('.')[0]);
+const filename = "创建客户";
 
 let constance;
 describe('#knowledgeBase/createCustomer', function () {
@@ -27,11 +27,19 @@ describe('#knowledgeBase/createCustomer', function () {
         } = constance;	
 
         //click knowledgeBase and customer
-        await event.clickElement(page,'div.ant-menu-submenu-title',3);
-        await event.clickElement(page,'li.ant-menu-item', 6);
-        await event.changeUrlWait(page);
-        console.log('click knowledgeBase and customer');
-        
+        try {
+            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/customers", {
+                timeout: 100000
+            });
+            await page.waitForSelector(".ant-breadcrumb-link", {
+                timeout: 100000
+            });
+        } catch (e) {
+            console.error('跳转客户页面错误');
+            console.error(e);
+                }
+        console.log('进入创建客户页面')
+
         var rand = Math.random().toFixed(3);
         //add customer
         await event.clickElement(page,'.anticon.anticon-plus',0);
@@ -40,14 +48,14 @@ describe('#knowledgeBase/createCustomer', function () {
         await event.clickAndType(page,'#note',`note${rand}`);
         //submit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        //wait for 创建按钮 show up
-	    await page.waitForSelector('.anticon.anticon-plus');
+        //wait for 取消按钮 disappear
+        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
         //screenshot
-        await page.screenshot({path: filename + '.png'});
+        await page.screenshot({path: `images/${filename}.png`});
         //assert
-        const ths = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
-        console.log(ths);
-        assert.equal(ths, `customer${rand}`,'ths = `customer${rand}`');
+        const result = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
+        console.log(`result is ${result}`);
+        assert.equal(result, `customer${rand}`,'result = `customer${rand}`');
         console.log('test end');
 	
 		})

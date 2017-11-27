@@ -6,7 +6,8 @@ const constant = require('../../config/constant');
 const event = require('../../utils/event');
 const puppeteer = require('puppeteer');
 
-const filename = path.resolve(__dirname, __filename.split('.')[0]);
+// const filename = path.resolve(__dirname, __filename.split('.')[0]);
+const filename = "创建单位"
 
 let constance;
 describe('#knowledgeBase/createUnit', function () {
@@ -20,7 +21,7 @@ describe('#knowledgeBase/createUnit', function () {
 		await browser.close();
 	});
 
-	it('create unit successfully', async() => {
+	it('创建单位', async() => {
 		await timeout(1000);
 		const {
 			page,
@@ -28,26 +29,34 @@ describe('#knowledgeBase/createUnit', function () {
         } = constance;	
 
         //click knowledgeBase and unit
-        await event.clickElement(page,'div.ant-menu-submenu-title',3);
-        await event.clickElement(page,'li.ant-menu-item', 3);
-        await event.changeUrlWait(page);
-        console.log('click knowledgeBase and unit');
+        try {
+            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/units", {
+                timeout: 100000
+            });
+            await page.waitForSelector(".ant-breadcrumb-link", {
+                timeout: 100000
+            });
+        } catch (e) {
+            console.error('跳转单位页面错误');
+            console.error(e);
+				}
+			console.log('进入单位页面')
 
         //click 创建单位
         await page.click('.anticon.anticon-plus ');
         await event.changeUrlWait(page);
-
         var rand = Math.random().toFixed(6);
         //input name and note
         await event.clickAndType(page, '#name',`unit${rand}`);
-        await event.clickAndType(page, '#note',`note${rand}`);
-
+        await event.clickAndType(page, '#note',`note${rand}`);  
+        //输入备注
+		await event.clickAndType(page, '#note','我是创建单位的备注');
         //submmit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        //wait for 创建按钮 show up
-	    await page.waitForSelector('.anticon.anticon-plus');
+        //wait for 取消按钮 disappear
+        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
         //screenshot
-        await page.screenshot({path: filename + '.png'});
+        await page.screenshot({ path: `images/${filename}.png` });
         //assert
         const ths = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
         console.log(ths);

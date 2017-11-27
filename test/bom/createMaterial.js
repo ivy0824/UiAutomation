@@ -5,7 +5,7 @@ const init = require('../../init');
 const constant = require('../../config/constant');
 const event = require('../../utils/event');
 
-const filename = path.resolve(__dirname, __filename.split('.')[0]);
+const filename = "创建物料";
 
 let constance;
 describe('#bom/createMaterial', function () {
@@ -22,14 +22,18 @@ describe('#bom/createMaterial', function () {
 		const { page, browser } = constance;//const page = constance.page
 
 		// click Bom 
-		await event.clickElement(page,'div.ant-menu-submenu-title',1);
-
-		console.log('click bom');
-
-		//click metarial
-		await event.clickElement(page, 'li.ant-menu-item', 3);
-		await event.changeUrlWait(page);
-		console.log('click material');
+		try {
+            await page.goto("https://web-beta.blacklake.cn/bom/materials/list", {
+                timeout: 100000
+            });
+            await page.waitForSelector(".ant-breadcrumb-link", {
+                timeout: 100000
+            });
+        } catch (e) {
+            console.error('跳转物料列表页面错误');
+            console.error(e);
+				}
+					console.log('进入bom页面')
 
 		//创建物料
 
@@ -41,7 +45,7 @@ describe('#bom/createMaterial', function () {
 		//input material name
 
 		var rand = Math.random().toFixed(6);
-		
+
 		await event.clickAndType(page,'#name',`material-name${rand}`);
 		console.log('input material name');
 
@@ -66,8 +70,13 @@ describe('#bom/createMaterial', function () {
 
 		//click submit
 		await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
-		await page.screenshot({path: filename + '.png'});
-		console.log('test end');
-  
-    })
+		//wait for window disappear
+		await event.waitForDisappear(page, '.ant-radio-inner');
+
+		//screenshot
+        await page.screenshot({ path: `images/${filename}.png`});
+
+		})
+	
+
   });

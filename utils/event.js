@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const constant = require('../config/constant');
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -15,14 +16,32 @@ const changeUrlWait = async(page) => {
 }
 
 const clickElement = async(page, cssSelector, index) => {
-  await page.evaluate(async(cssSelector, index) => {
-    const items = document.querySelectorAll(cssSelector);
-    if (items.length > 0) {
+  let items = [];
+  try {
+    items = await page.$$(cssSelector);
+  } catch (e) {
+    console.error(`${cssSelector}寻找元素出错`);
+    console.error(e);
+    await page.screenshot({
+      path: `images/寻找${cssSelector}.png`
+    });
+    console.error('截图已经存下');
+  }
+  if (items && items.length > 0) {
+    try {
+      await items[index].focus();
       await items[index].click();
-    } else {
-      throw new Error("can't find element");
+    } catch (e) {
+      console.error(`${items[index]}元素点击事件错误`);
+      console.error(e);
     }
-  }, cssSelector, index);
+  } else {
+    console.error(`${cssSelector}没有找到元素`);
+    await page.screenshot({
+      path: `images/${cssSelector}没有找到.png`
+    });
+    process.exit(1);
+  }
 };
 
 
@@ -36,22 +55,32 @@ const clickElementAndType = async(page, cssSelector, index, input) => {
   }
 };
 
-  
+
 const clickAndType = async(page, cssSelector, input) => {
-	await page.click(cssSelector);
+  await page.click(cssSelector);
   await sleep(1000);
-  // console.log('test');
-  // console.log(cssSelector, input);
   await page.type(cssSelector, input);
-  // console.log('1')
-  // console.log(cssSelector);
-  // console.log(input);
 }
 
+const waitForDisappear = async(page, cssSelector) => {
+  let appear = true;
+  while (appear) {
+    const result = await page.$(cssSelector);
+    if (result === null) {
+      // await page.screenshot({path: filename + '.png'});
+      appear = false;
+    }
+  }
+}
+
+
+
+
 module.exports = {
-	sleep,
-	changeUrlWait,
+  sleep,
+  changeUrlWait,
   clickElement,
   clickAndType,
   clickElementAndType,
+  waitForDisappear,
 };
