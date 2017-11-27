@@ -7,7 +7,7 @@ const event = require('../../utils/event');
 const puppeteer = require('puppeteer');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
-const filename = "创建单位"
+const filename = "修改单位"
 
 let constance;
 describe('#knowledgeBase/createUnit', function () {
@@ -48,8 +48,7 @@ describe('#knowledgeBase/createUnit', function () {
         var rand = Math.random().toFixed(6);
         //input name and note
         await event.clickAndType(page, '#name',`unit${rand}`);
-        await event.clickAndType(page, '#note',`note${rand}`);  
-        //输入备注
+        // await event.clickAndType(page, '#note',`note${rand}`);  
 		await event.clickAndType(page, '#note','我是创建单位的备注');
         //submmit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
@@ -58,9 +57,9 @@ describe('#knowledgeBase/createUnit', function () {
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });
         //assert
-        const ths = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
-        console.log(ths);
-        assert.equal(ths, `unit${rand}`,'ths = `unit${rand}`');
+        const rēsult = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
+        console.log('rēsult is',rēsult);
+        assert.equal(rēsult, `unit${rand}`,'rēsult = `unit${rand}`');
         console.log('test end');
     })
 
