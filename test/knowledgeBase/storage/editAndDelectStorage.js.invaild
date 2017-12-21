@@ -8,10 +8,10 @@ const puppeteer = require('puppeteer');
 const precondition = require('../../../utils/precondition');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
-const filename = "修改客户"
+const filename = "修改仓位"
 
 let constance;
-describe('#knowledgeBase/editAndDelectCustomer', function () {
+describe('#knowledgeBase/editAndDelectStorage', function () {
 	before(async() => {
 		constance = await init();
 		
@@ -22,22 +22,32 @@ describe('#knowledgeBase/editAndDelectCustomer', function () {
 		await browser.close();
 	});
 
-	it('修改单位', async() => {
+	it('修改仓位', async() => {
 		await timeout(1000);
 		const {
 			page,
 			browser
-        } = constance;	
+        } = constance;
+        //anticon.anticon-ellipsis.undefined	
+        //anticon.anticon-plus.undefined
+        //anticon.anticon-edit.undefined
+        //anticon.anticon-delete.undefined
+        //anticon.anticon-bars.undefined
+        //我是52字的仓位备注我是52字的仓位备注我是52字的仓位备注我是52字的仓位备注52字
         //创建一个单位（默认会显示在第一行）
-        const customerName = await precondition.createCustomer(page);
-        console.log('customer is',customerName);
+        const storageName = await precondition.createStorage(page);
+        console.log('storage is',storageName);
+        //点击操作按钮
+        // await page.hover('anticon.anticon-ellipsis.undefined');
+        await event.clickElement(page,'.anticon-ellipsis',0);
         //点击编辑按钮
         await event.clickElement(page, '.anticon.anticon-edit.undefined', 0);
         //wait for 取消按钮 appear
         await page.waitForSelector('.ant-btn.ant-btn-ghost');
-        //change name and note
-        await event.clickAndType(page,'#name',`ch`);
-        await event.clickAndType(page,'#note',`我是客户备注`);
+        //change name,linkCode and note
+        await event.clickElementAndType(page,'.ant-input',1,'ch');
+        await event.clickAndType(page, '#linkCode', 'ch')
+        await event.clickAndType(page,'#note','我是仓位备注');
         //submit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
         //screenshot
@@ -45,10 +55,11 @@ describe('#knowledgeBase/editAndDelectCustomer', function () {
         //assert
         const result = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
         console.log('result is', result);
-        assert.equal(result,`${customerName}ch` ,'result = `${customerName}ch`');
-        //删除单位
+        assert.equal(result,`${storageName}ch` ,'result = `${storageName}ch`');
+        //停用单位
+        await EventTarget.clickElement(page,'.anticon.anticon-ellipsis.undefined',0);
         await event.clickElement(page, '.anticon.anticon-delete.undefined', 0);
-        await page.screenshot({ path: `images/${filename}.png` });
+        await page.waitForSelector('.ant-btn.ant-btn-primary.ant-btn-sm');
         await event.clickElement(page, '.ant-btn.ant-btn-primary.ant-btn-sm', 0);
         //wait for 取消按钮 disappear
         await event.waitForDisappear(page,'.ant-btn.ant-btn-primary.ant-btn-sm');

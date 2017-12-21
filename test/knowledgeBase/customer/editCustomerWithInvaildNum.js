@@ -8,7 +8,7 @@ const puppeteer = require('puppeteer');
 const precondition = require('../../../utils/precondition');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
-const filename = "修改客户"
+const filename = "修改不合法客户"
 
 let constance;
 describe('#knowledgeBase/editAndDelectCustomer', function () {
@@ -22,7 +22,7 @@ describe('#knowledgeBase/editAndDelectCustomer', function () {
 		await browser.close();
 	});
 
-	it('修改单位', async() => {
+	it('修改不合法客户', async() => {
 		await timeout(1000);
 		const {
 			page,
@@ -36,24 +36,20 @@ describe('#knowledgeBase/editAndDelectCustomer', function () {
         //wait for 取消按钮 appear
         await page.waitForSelector('.ant-btn.ant-btn-ghost');
         //change name and note
-        await event.clickAndType(page,'#name',`ch`);
-        await event.clickAndType(page,'#note',`我是客户备注`);
-        //submit
+        await event.clickAndType(page,'#name',`chch`);
+        await event.clickAndType(page,'#note',`ch`);
+        //submmit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });
-        //assert
-        const result = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
-        console.log('result is', result);
-        assert.equal(result,`${customerName}ch` ,'result = `${customerName}ch`');
-        //删除单位
-        await event.clickElement(page, '.anticon.anticon-delete.undefined', 0);
-        await page.screenshot({ path: `images/${filename}.png` });
-        await event.clickElement(page, '.ant-btn.ant-btn-primary.ant-btn-sm', 0);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-primary.ant-btn-sm');
-        //screenshot
-        await page.screenshot({ path: `images/${filename}.png` });  
+        //assert 客户名称长度
+        const rēsult = await page.$eval('.ant-form-explain',x=>x.innerText);
+        console.log('rēsult is',rēsult);
+        assert.equal(rēsult, '单位长度不能超过12个字','rēsult = 单位长度不能超过12个字');
+        //assert 备注长度验证
+        const rēsult1 = await event.selectElement(page,'.ant-form-explain',1);
+        console.log('rēsult1 is',rēsult1);
+        assert.equal(rēsult1, '最多可输入50字，已超出2个字','rēsult = 最多可输入50字，已超出2个字')
         console.log('test end');
         
     })

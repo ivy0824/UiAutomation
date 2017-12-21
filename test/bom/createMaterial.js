@@ -38,7 +38,7 @@ describe('#bom/createMaterial', function () {
 		//创建物料
 
 		//click 创建物料
-		await page.click('span[style="padding-left: 8px;"]');
+		await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
 		await event.changeUrlWait(page);
 		console.log('click 创建物料1');
 
@@ -47,7 +47,7 @@ describe('#bom/createMaterial', function () {
 		var rand = Math.random().toFixed(6);
 
 		await event.clickAndType(page,'#name',`material-name${rand}`);
-		console.log('input material name');
+		console.log(`add material name is material-name${rand}`);
 
 		//input code
 		await event.clickAndType(page,'#code',`code${rand}`);
@@ -69,9 +69,9 @@ describe('#bom/createMaterial', function () {
 		console.log('select material type');
 
 		//click submit
-		await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
+		await event.clickElement(page,'.ant-btn.ant-btn-primary',2);
 		//wait for window disappear
-		await event.waitForDisappear(page, '.ant-radio-inner');
+		await event.waitForDisappear(page, '.ant-btn.ant-btn-ghost');
 
 		//screenshot
         await page.screenshot({ path: `images/${filename}.png`});

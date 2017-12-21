@@ -5,10 +5,10 @@ const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
 
-const filename = "创建客户";
+const filename = "创建不合法客户";
 
 let constance;
-describe('#knowledgeBase/createCustomer', function () {
+describe('#knowledgeBase/createCustomerWithInvaildNum', function () {
 	beforeEach(async() => {
 		constance = await init();
 		
@@ -19,7 +19,7 @@ describe('#knowledgeBase/createCustomer', function () {
 		await browser.close();
 	});
 
-	it('create customer successfully', async() => {
+	it('创建不合法客户', async() => {
 		await timeout(1000);
 		const {
 			page,
@@ -44,21 +44,19 @@ describe('#knowledgeBase/createCustomer', function () {
         //add customer
         await event.clickElement(page,'.ant-btn.editable-add-btn.ant-btn-primary',0);
         await page.waitForSelector('#name');
-        await event.clickAndType(page,'#name',`cust${rand}`);
-        console.log(`customer name is cust${rand}`);
-        await event.clickAndType(page,'#note',`note${rand}`);
-
-        //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
-        
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
+        await event.clickAndType(page,'#name',`customer${rand}`);
+        console.log(`customer name is customer${rand}`);
+        await event.clickAndType(page,'#note','我是个52个字的备注我是个52个字的备注我是个52个字的备注我是个52个字的备注我是个52个字的备注52');
+        //assert 客户名称长度
+        const rēsult = await page.$eval('.ant-form-explain',x=>x.innerText);
+        console.log('rēsult is',rēsult);
+        assert.equal(rēsult, '单位长度不能超过12个字','rēsult = 单位长度不能超过12个字');
+        //assert 备注长度验证
+        const rēsult1 = await event.selectElement(page,'.ant-form-explain',1);
+        console.log('rēsult1 is',rēsult1);
+        assert.equal(rēsult1, '最多可输入50字，已超出2个字','rēsult = 最多可输入50字，已超出2个字')
         //screenshot
         await page.screenshot({path: `images/${filename}.png`});
-        //assert
-        const result = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
-        console.log(`result is ${result}`);
-        assert.equal(result, `cust${rand}`,'result = `cust${rand}`');
         console.log('test end');
 	
 		})
