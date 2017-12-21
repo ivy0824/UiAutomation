@@ -28,7 +28,7 @@ describe('#cooperate/productOrders/createProductOrder', function () {
 		} = constance;	
 		//创建项目
 		//click 创建项目
-		await event.clickElement(page,'span[style="padding-left: 8px;"]',0);
+		await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
 		await event.changeUrlWait(page);
 
 		//select purchaseOrder

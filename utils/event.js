@@ -44,6 +44,11 @@ const clickElement = async(page, cssSelector, index) => {
   }
 };
 
+const clickAndType = async(page, cssSelector, input) => {
+  await page.click(cssSelector);
+  await sleep(1000);
+  await page.type(cssSelector, input);
+}
 
 const clickElementAndType = async(page, cssSelector, index, input) => {
   const items = await page.$$(cssSelector);
@@ -55,12 +60,14 @@ const clickElementAndType = async(page, cssSelector, index, input) => {
   }
 };
 
+const selectElement = async(page,cssSelector,index) => {
+	const items = await page.$$eval(cssSelector ,x=>x.map(node => node.innerText));
+	// console.log('items:'+items[0])
+  	return items[index];
+};
 
-const clickAndType = async(page, cssSelector, input) => {
-  await page.click(cssSelector);
-  await sleep(1000);
-  await page.type(cssSelector, input);
-}
+
+
 
 const waitForDisappear = async(page, cssSelector) => {
   let appear = true;
@@ -82,5 +89,6 @@ module.exports = {
   clickElement,
   clickAndType,
   clickElementAndType,
+  selectElement,
   waitForDisappear,
 };

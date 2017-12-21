@@ -70,7 +70,7 @@ const createAttation = async (page) => {
 
         var rand = Math.random().toFixed(3);
         //add attation
-        await event.clickElement(page,'.actionButtonContainer',1);
+        await event.clickElement(page,'.ant-btn.ant-btn-primary', 1);
         await event.clickAndType(page,'#name-0',`atta${rand}`);
         await event.clickAndType(page,'#method-0',`meth${rand}`);
         await event.clickAndType(page,'#standard-0',`stand${rand}`);
@@ -106,19 +106,16 @@ const createAttationType = async (page) => {
         
         var rand = Math.random().toFixed(3);
         //添加分类
-        await event.clickElement(page,'.actionButtonContainer',0);
+        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
         await event.clickAndType(page,'#name',`class${rand}`);        
         //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
+        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
         //wait for 取消按钮 disappear
         await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        //screenshot
-        await page.screenshot({path: `images/${filename}.png`});
-        await timeout(20000);
         //assert
-        const result = await page.$eval( '.ant-row',x=>x.innerText);
-        console.log(`result is ${result}`);
-        assert.equal(result, `class${rand}`,'result = `class${rand}`');
+        // const result = await page.$eval( '.ant-row',x=>x.innerText);
+        // console.log(`result is ${result}`);
+        // assert.equal(result, `class${rand}`,'result = `class${rand}`');
         return `class${rand}`;
 }
 
@@ -165,17 +162,18 @@ const createPauseCause = async (page) => {
     
         var rand = Math.random().toFixed(3);
         //创建停产原因
-        await event.clickElement(page,'.anticon.anticon-plus',0);
+        await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
         await event.clickAndType(page,'#name',`sRea${rand}`);
 
         //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
+        await event.clickElement(page,'.ant-btn.ant-btn-primary', 1);
         //wait for 取消按钮 disappear
         await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
         return `sRea${rand}`;
 }
 
 const createUnit = async (page) => {
+    const filename = "创建不合法单位1"
     try {
         await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/units", {
             timeout: 100000
@@ -188,18 +186,20 @@ const createUnit = async (page) => {
         console.error(e);
             }
 	console.log('进入单位页面')
-
+            
     //click 创建单位
     await page.click('.anticon.anticon-plus ');
     await event.changeUrlWait(page);
     var rand = Math.random().toFixed(3);
     //input name and note
     await event.clickAndType(page, '#name',`unit${rand}`);
-    await event.clickAndType(page, '#note',`note${rand}`);  
+    await event.clickAndType(page, '#note',`note${rand}`); 
     //输入备注
     await event.clickAndType(page, '#note','我是创建单位的备注');
+    await page.screenshot({ path: `images/${filename}.png` });
     //submmit
-    await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
+    await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
+    
     //wait for 取消按钮 disappear
     await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
     return `unit${rand}`;

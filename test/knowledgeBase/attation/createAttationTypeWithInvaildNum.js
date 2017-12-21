@@ -1,14 +1,14 @@
 const { assert } = require('chai');
 const path = require('path');
-const timeout = require('../../utils/timeout');
-const init = require('../../init');
-const constant = require('../../config/constant');
-const event = require('../../utils/event');
+const timeout = require('../../../utils/timeout');
+const init = require('../../../init');
+const constant = require('../../../config/constant');
+const event = require('../../../utils/event');
 
-const filename = "创建质检分类";
+const filename = "创建不合法质检分类";
 
 let constance;
-describe('#knowledgeBase/createAttaionType', function () {
+describe('#knowledgeBase/createAttaionTypeWithInvaildNum', function () {
 	beforeEach(async() => {
 		constance = await init();
 		
@@ -19,7 +19,7 @@ describe('#knowledgeBase/createAttaionType', function () {
 		await browser.close();
 	});
 
-	it('create attation type successfully', async() => {
+	it('创建不合法质检分类', async() => {
 		await timeout(1000);
 		const {
 			page,
@@ -40,24 +40,19 @@ describe('#knowledgeBase/createAttaionType', function () {
                 }
         console.log('进入质检关注点页面')
         
-        var rand = Math.random().toFixed(3);
+        var rand = Math.random().toFixed(6);
         //添加分类
-        await event.clickElement(page,'.actionButtonContainer',0);
+        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
         await event.clickAndType(page,'#name',`class${rand}`);
-        // const expect = `class${rand}`;
-        // console.log('except='+expect);
         
         //submit
         await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
         //screenshot
         await page.screenshot({path: `images/${filename}.png`});
-        await timeout(20000);
         //assert
-        const result = await page.$eval( '.ant-row',x=>x.innerText);
+        const result = await page.$eval( '.ant-form-explain',x=>x.innerText);
         console.log(`result is ${result}`);
-        assert.equal(result, `class${rand}`,'result = `class${rand}`');
+        assert.equal(result, '分类长度不可超过12个字符','result = 分类长度不可超过12个字符');
 
         })
     

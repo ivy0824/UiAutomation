@@ -1,13 +1,13 @@
 const { assert } = require('chai');
 const path = require('path');
-const timeout = require('../../utils/timeout');
-const init = require('../../init');
-const constant = require('../../config/constant');
-const event = require('../../utils/event');
+const timeout = require('../../../utils/timeout');
+const init = require('../../../init');
+const constant = require('../../../config/constant');
+const event = require('../../../utils/event');
 const puppeteer = require('puppeteer');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
-const filename = "修改单位"
+const filename = "创建单位"
 
 let constance;
 describe('#knowledgeBase/createUnit', function () {

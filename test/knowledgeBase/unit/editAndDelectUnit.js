@@ -1,11 +1,11 @@
 const { assert } = require('chai');
 const path = require('path');
-const timeout = require('../../utils/timeout');
-const init = require('../../init');
-const constant = require('../../config/constant');
-const event = require('../../utils/event');
+const timeout = require('../../../utils/timeout');
+const init = require('../../../init');
+const constant = require('../../../config/constant');
+const event = require('../../../utils/event');
 const puppeteer = require('puppeteer');
-const precondition = require('../../utils/precondition');
+const precondition = require('../../../utils/precondition');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
 const filename = "修改单位"
@@ -30,11 +30,12 @@ describe('#knowledgeBase/editAndDelectUnit', function () {
         } = constance;	
         //创建一个单位（默认会显示在第一行）
         const unitName = await precondition.createUnit(page);
-        console.log( unitName);
+        console.log( 'unitName is',unitName);
         //点击编辑按钮
-        await event.clickElement(page, '.anticon.anticon-edit', 0);
+        await event.clickElement(page, '.anticon.anticon-edit.undefined', 0);
+        await page.screenshot({ path: `images/${filename}.png` });
         //wait for 取消按钮 appear
-        await page.waitForSelector('.ant-btn.ant-btn-ghost');
+        // await page.waitForSelector('.ant-btn.ant-btn-ghost');
         var rand = Math.random().toFixed(6);
         //change name and note
         await event.clickAndType(page, '#name',`ch`); 

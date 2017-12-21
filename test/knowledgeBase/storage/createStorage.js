@@ -1,9 +1,9 @@
 const { assert } = require('chai');
 const path = require('path');
-const timeout = require('../../utils/timeout');
-const init = require('../../init');
-const constant = require('../../config/constant');
-const event = require('../../utils/event');
+const timeout = require('../../../utils/timeout');
+const init = require('../../../init');
+const constant = require('../../../config/constant');
+const event = require('../../../utils/event');
 
 const filename = "创建仓位";
 
