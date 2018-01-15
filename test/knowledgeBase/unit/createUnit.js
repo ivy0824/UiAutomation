@@ -5,9 +5,14 @@ const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
 const puppeteer = require('puppeteer');
+const element = require('../../element');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
 const filename = "创建单位"
+const pageUrl = element.pageUrl;
+const common = element.common;
+const unit = element.unit;
+
 
 let constance;
 describe('#knowledgeBase/createUnit', function () {
@@ -29,35 +34,23 @@ describe('#knowledgeBase/createUnit', function () {
         } = constance;	
 
         //click knowledgeBase and unit
-        try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/units", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转单位页面错误');
-            console.error(e);
-				}
-			console.log('进入单位页面')
-
+        await event.goToPage(page,pageUrl.units,unit.breakCrumb)
         //click 创建单位
-        await page.click('.anticon.anticon-plus ');
-        await event.changeUrlWait(page);
+        await page.click(unit.createUnitButton);
+        await page.screenshot({ path: `images/${filename}.png` });          
         var rand = Math.random().toFixed(6);
         //input name and note
-        await event.clickAndType(page, '#name',`unit${rand}`);
+        await event.clickAndType(page, unit.name,`unit${rand}`);
         // await event.clickAndType(page, '#note',`note${rand}`);  
-		await event.clickAndType(page, '#note','我是创建单位的备注');
+		await event.clickAndType(page, unit.note,'我是创建单位的备注');
         //submmit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
+        await event.clickElement(page,unit.completeButton, 2);
         //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
+        await event.waitForDisappear(page,unit.cancleButton);
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });
         //assert
-        const rēsult = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
+        const rēsult = await page.$eval(unit.firstUnit , x=>x.innerText);
         console.log('rēsult is',rēsult);
         assert.equal(rēsult, `unit${rand}`,'rēsult = `unit${rand}`');
         console.log('test end');

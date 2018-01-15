@@ -26,7 +26,7 @@ const init = async() => {
   await page.goto(`${host}login`);
   await page.type('#username', '13000000000');
   await page.type('#password', 'woshilaohei');
-  await page.click('.ant-btn.ant-btn-primary.ant-btn-lg');
+  await page.click('.ant-btn.button___3jJ6D.ant-btn-primary');
   console.log('登陆成功')
    
   try {
