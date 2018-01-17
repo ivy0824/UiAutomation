@@ -1,10 +1,20 @@
 const puppeteer = require('puppeteer');
 const constant = require('../config/constant');
-const event = require('../utils/event')
+const event = require('../utils/event');
+const element = require('../test/element');
+const pageUrl = element.pageUrl;
+const common = element.common;
+const unit = element.unit;
+const productivityStandard = element.productivityStandard;
+const workStation = element.workStation;
+const qcItem = element.qcItem;
+const customer = element.customer;
+const storage = element.storage;
+const producePauseCauses = element.producePauseCause;
 
 const createMaterial = async (page) => {
 	try {
-            await page.goto("https://web-beta.blacklake.cn/bom/materials/list", {
+            await page.goto(pageUrl.materials, {
                 timeout: 100000
             });
             await page.waitForSelector(".ant-breadcrumb-link", {
@@ -53,226 +63,142 @@ const createMaterial = async (page) => {
         return `materialName${rand}`;
 
 }
-    
-const createAttation = async (page) => {
-    try {
-        await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/qcItems", {
-            timeout: 100000
-        });
-        await page.waitForSelector(".ant-breadcrumb-link", {
-            timeout: 100000
-        });
-        } catch (e) {
-            console.error('跳转质检关注点页面错误');
-            console.error(e);
-                }
-        console.log('进入质检关注点页面')
-
-        var rand = Math.random().toFixed(3);
-        //add attation
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 1);
-        await event.clickAndType(page,'#name-0',`atta${rand}`);
-        await event.clickAndType(page,'#method-0',`meth${rand}`);
-        await event.clickAndType(page,'#standard-0',`stand${rand}`);
-        console.log(`add attation is atta${rand}`);
-
-        //add one more attation
-        // await event.clickElement(page,'.anticon.anticon-plus',2);
-        // await event.clickAndType(page,'#name-1',`atta1${rand}`);
-        // await event.clickAndType(page,'#method-1',`meth${rand}`);
-        // await event.clickAndType(page,'#standard-1',`stand${rand}`);
-        // console.log(`add one more attation is atta1${rand}`);
-
-        //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        return `atta${rand}`;
-}
-
-const createAttationType = async (page) => {
-    try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/qcItems", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转关注点页面错误');
-            console.error(e);
-                }
-        console.log('进入质检关注点页面')
-        
-        var rand = Math.random().toFixed(3);
-        //添加分类
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-        await event.clickAndType(page,'#name',`class${rand}`);        
-        //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        //assert
-        // const result = await page.$eval( '.ant-row',x=>x.innerText);
-        // console.log(`result is ${result}`);
-        // assert.equal(result, `class${rand}`,'result = `class${rand}`');
-        return `class${rand}`;
-}
-
-const createCustomer = async (page) => {
-    try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/customers", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转客户页面错误');
-            console.error(e);
-                }
-        console.log('进入创建客户页面')
-
-        var rand = Math.random().toFixed(3);
-        //add customer
-        await event.clickElement(page,'.ant-btn.editable-add-btn.ant-btn-primary',0);
-        await event.changeUrlWait(page); 
-        await event.clickAndType(page,'#name',`cust${rand}`);
-        await event.clickAndType(page,'#note','我是客户的备注');
-        //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        return `cust${rand}`;
-}
-
-const createPauseCause = async (page) => {
-    try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转暂停原因页面错误');
-            console.error(e);
-                }
-        console.log('进入暂停原因页面');
-    
-        var rand = Math.random().toFixed(3);
-        //创建停产原因
-        await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
-        await event.clickAndType(page,'#name',`sRea${rand}`);
-
-        //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 1);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        return `sRea${rand}`;
-}
 
 const createUnit = async (page) => {
     const filename = "创建不合法单位1"
-    try {
-        await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/units", {
-            timeout: 100000
-        });
-        await page.waitForSelector(".ant-breadcrumb-link", {
-            timeout: 100000
-        });
-    } catch (e) {
-        console.error('跳转单位页面错误');
-        console.error(e);
-            }
-	console.log('进入单位页面')
-            
+    //go to unit page
+    await event.goToPage(page,pageUrl.units,unit.breakCrumb)         
     //click 创建单位
-    await page.click('.anticon.anticon-plus ');
+    await event.clickElement(page,unit.createUnitButton,0);
     await event.changeUrlWait(page);
     var rand = Math.random().toFixed(3);
     //input name and note
-    await event.clickAndType(page, '#name',`unit${rand}`);
-    await event.clickAndType(page, '#note',`note${rand}`); 
-    //输入备注
-    await event.clickAndType(page, '#note','我是创建单位的备注');
+    await event.clickAndType(page, unit.name,`unit${rand}`);
+    await event.clickAndType(page, unit.note,'我是创建单位的备注');
     await page.screenshot({ path: `images/${filename}.png` });
     //submmit
-    await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
+    await event.clickElement(page,unit.completeButton, 2);
     
     //wait for 取消按钮 disappear
-    await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
+    await event.waitForDisappear(page,unit.cancleButton);
     return `unit${rand}`;
 }
 
 const createWorkStation = async (page) => {
-    try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/workStations", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转工位页面错误');
-            console.error(e);
-				}
-		console.log('进入工位页面')
+    //go to WorkStation page
+    await event.goToPage(page,pageUrl.workStations,workStation.breakCrumb) 
+    //click 创建工位
+    await event.clickElement(page,workStation.createWorkStationButton, 4)
+    var rand = Math.random().toFixed(3);
+    //输入一级仓位 
+    await event.clickAndType(page,workStation.name,`sta${rand}`)
+    //输入二维码
+    await event.clickAndType(page,workStation.QRCode,`linkCode${rand}`)
+    //输入备注
+    await event.clickAndType(page, workStation.note,'我是创建工位的备注');
+    //submit
+    await event.clickElement(page,workStation.completeButton, 2);
+    //wait for 取消按钮 disappear
+    await event.waitForDisappear(page,workStation.cancleButton);
+    return `sta${rand}`;
+}
 
-		//click 创建工位
-		await event.clickElement(page, '.ant-btn', 4)
-		var rand = Math.random().toFixed(3);
-		//input storage  
-		await event.clickElementAndType(page, '.ant-input.ant-input-lg', 0, `sta${rand}`)
-		//输入二维码
-		await event.clickElementAndType(page, '.ant-input.ant-input-lg', 1, `linkCode${rand}`)
-		//输入备注
-		await event.clickAndType(page, '#note','我是创建工位的备注');
-		//submit
-		await event.clickElement(page,'.ant-btn.ant-btn-primary', 0);
-		//wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        return `sta${rand}`;
+const createAttationType = async (page) => {
+    //go to attation page
+    await event.goToPage(page,pageUrl.qcItems,qcItem.breakCrumb)      
+    var rand = Math.random().toFixed(3);
+    //添加分类
+    await event.clickElement(page,qcItem.createQcItemButton, 0);
+    await event.clickAndType(page,qcItem.typeName,`class${rand}`);        
+    //submit
+    await event.clickElement(page,qcItem.completeButton, 2);
+    //wait for 取消按钮 disappear
+    await event.waitForDisappear(page,qcItem.cancleButton);
+    return `class${rand}`;
+}
+    
+const createAttation = async (page) => {
+    //go to attation page
+    await event.goToPage(page,pageUrl.qcItems,qcItem.breakCrumb) 
+    var rand = Math.random().toFixed(3);
+    //add attation
+    await event.clickElement(page,qcItem.createQcItemButton, 1);
+    await event.clickAndType(page,qcItem.attationName,`atta${rand}`);
+    await event.clickAndType(page,qcItem.attationMethod,`meth${rand}`);
+    await event.clickAndType(page,qcItem.attationStandard,`stand${rand}`);
+    console.log(`add attation is atta${rand}`);
+
+    //add one more attation
+    // await event.clickElement(page,'.anticon.anticon-plus',2);
+    // await event.clickAndType(page,'#name-1',`atta1${rand}`);
+    // await event.clickAndType(page,'#method-1',`meth${rand}`);
+    // await event.clickAndType(page,'#standard-1',`stand${rand}`);
+    // console.log(`add one more attation is atta1${rand}`);
+
+    //submit
+    await event.clickElement(page,qcItem.completeButton, 2);
+    //wait for 取消按钮 disappear
+    await event.waitForDisappear(page,qcItem.cancleButton);
+    return `atta${rand}`;
+}
+
+const createCustomer = async (page) => {
+    //go to customer page
+    await event.goToPage(page,pageUrl.customers,customer.breakCrumb) 
+    var rand = Math.random().toFixed(3);
+    //add customer
+    await event.clickElement(page,customer.createCustomerButton,0);
+    await page.waitForSelector(customer.cancleButton);
+    await event.clickAndType(page,customer.name,`cust${rand}`);
+    await event.clickAndType(page,customer.note,'我是客户的备注');
+    //submit
+    await event.clickElement(page,customer.completeButton, 2);
+    //wait for 取消按钮 disappear
+    await event.waitForDisappear(page,customer.cancleButton);
+    return `cust${rand}`;
 }
 
 const createStorage = async (page) => {
-    try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/storages", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转仓位页面错误');
-            console.error(e);
-                }
-        console.log('进入创建仓位页面');
-    
-        var rand = Math.random().toFixed(3);
-	    //创建仓位
-        await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
-        await page.waitForSelector('.ant-btn.ant-btn-ghost');
-        //输入一级仓位
-        await event.clickElementAndType(page,'.ant-input',1,`Stor${rand}`);
-        //输入二维码
-        await event.clickAndType(page, '#linkCode', `linkCode${rand}`)
-		//输入备注
-		await event.clickAndType(page, '#note','我是创建仓位的备注');
-	    //submmit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
-        //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
-        return `stor${rand}`;
+    //go to storage page
+    await event.goToPage(page,pageUrl.storages,customer.breakCrumb)  
+    var rand = Math.random().toFixed(3);
+    //创建仓位
+    await event.clickElement(page,storage.createStorageButton,0);
+    await page.waitForSelector(storage.cancleButton);
+    //输入一级仓位
+    await event.clickAndType(page,storage.name,`Stor${rand}`)
+    //输入二维码
+    await event.clickAndType(page, storage.QRCode, `linkCode${rand}`)
+    //输入备注
+    await event.clickAndType(page, storage.note,'我是创建仓位的备注');
+    //submmit
+    await event.clickElement(page,storage.completeButton, 2);
+    //wait for 取消按钮 disappear
+    await event.waitForDisappear(page,storage.cancleButton);
+    return `stor${rand}`;
+}
+
+const createPauseCause = async (page) => {
+    //go to PauseCause page
+    await event.goToPage(page,pageUrl.producePauseCauses,producePauseCause.breakCrumb) 
+    var rand = Math.random().toFixed(3);
+    //创建停产原因
+    await event.clickElement(page,producePauseCauses.createProducePauseCausesButton,0);
+    await event.clickAndType(page,producePauseCause.name,`sRea${rand}`);
+    //submit
+    await event.clickElement(page,producePauseCause.completeButton, 1);
+    //wait for 取消按钮 disappear
+    await event.waitForDisappear(page,producePauseCause.cancleButton);
+    return `sRea${rand}`;
 }
 
 module.exports = {
     createMaterial,
-    createAttation,
-    createAttationType,
-    createCustomer,
-    createPauseCause,
-    createStorage,
     createUnit,
     createWorkStation,
+    createAttationType,
+    createAttation,
+    createCustomer,
+    createStorage,
+    createPauseCause, 
 };

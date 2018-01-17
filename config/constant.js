@@ -13,5 +13,4 @@ module.exports = {
   materialType,
   qualityType,
   attationType,
-
 };

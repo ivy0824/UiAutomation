@@ -13,7 +13,6 @@ const pageUrl = element.pageUrl;
 const common = element.common;
 const unit = element.unit;
 
-
 let constance;
 describe('#knowledgeBase/createUnit', function () {
 	before(async() => {
@@ -33,7 +32,7 @@ describe('#knowledgeBase/createUnit', function () {
 			browser
         } = constance;	
 
-        //click knowledgeBase and unit
+        //go to unit page
         await event.goToPage(page,pageUrl.units,unit.breakCrumb)
         //click 创建单位
         await page.click(unit.createUnitButton);
