@@ -38,7 +38,7 @@ describe('#knowledgeBase/editAndDelectAttation', function () {
         //点击编辑按钮
         await event.clickElement(page, qcItem.edit, 1);
         await page.screenshot({ path: `images/${filename}.png` });
-         //wait for cancleButton appear
+        //wait for cancleButton appear
         await page.waitForSelector(qcItem.cancleButton);
         //change name 
         await event.clickAndType(page,qcItem.attationName_e,`ch`);

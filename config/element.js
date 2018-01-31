@@ -94,6 +94,7 @@ const qcItem = {
     attationMethod1 : '#method-1',
     attationStandard1 : '#standard-1',
     deleteAttation : '.anticon.anticon-minus-circle-o.delIcon___3tBAo',
+    invalidAssert : '.ant-form-explain',
     //修改关注点的输入框元素
     attationName_e : '#name',
     attationMethod_e : '#method',
@@ -116,7 +117,8 @@ const customer = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstCustomer : common.firstItem
+    firstCustomer : common.firstItem,
+    invalidAssert : '.ant-form-explain',
 }
 
 const storage ={

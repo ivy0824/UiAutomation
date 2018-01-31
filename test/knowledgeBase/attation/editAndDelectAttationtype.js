@@ -40,14 +40,15 @@ describe('#knowledgeBase/editAndDelectAttation', function () {
         await page.waitForSelector(qcItem.cancleButton_e);
         await page.screenshot({ path: `images/${filename}.png` });
         //change name 
-        await event.clickElement(page, qcItem.typeName_e, `ch`)
+        await event.clickElementAndType(page, qcItem.typeName_e, 1, `ch`)
         await page.screenshot({ path: `images/${filename}.png` }); 
         //submmit
-        await event.clickElement(page,qcItem.completeButton_e, 3);
+        await event.clickElement(page,qcItem.completeButton_e, 1);
+        console.log(1)
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });
         //assert
-        const result = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
+        const result = await page.$eval( '.ant-col-20',x=>x.innerText);
         console.log('result is', result);
         assert.equal(result,`${attationType}ch` ,'result = `${attationType}ch`');
         //删除关注点
