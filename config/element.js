@@ -7,7 +7,7 @@ const pageUrl = {
     workStations : 'https://web-beta.blacklake.cn/knowledgeManagement/workStations',
     customers : 'https://web-beta.blacklake.cn/knowledgeManagement/customers',
     storages : 'https://web-beta.blacklake.cn/knowledgeManagement/storages',
-    producePauseCauses : 'https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses',
+    pauseCauses : 'https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses',
 
 }
 //单位
@@ -27,10 +27,10 @@ const common = {
     name : '#name',
     note : '#note',
     completeButton : '.ant-btn.ant-btn-primary',
-    cancleButton : 'ant-btn.ant-btn-ghost',
+    cancleButton : '.ant-btn.ant-btn-ghost',
     breakCrumb : '.ant-breadcrumb-link',
     search : '.ant-input',
-    firstUnit : '.ant-table-row.myTableRowBordered.ant-table-row-level-0>td'
+    firstItem : '.ant-table-row.myTableRowBordered.ant-table-row-level-0>td'
 }
 
 // 单位
@@ -46,7 +46,8 @@ const unit = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstUnit : common.firstItem,
+    invalidAssert : '.ant-form-explain'
     // completeButton : `${common.completeButton}.aaaa`,
 
 };
@@ -58,7 +59,7 @@ const productivityStandard = {
 }
 
 const workStation = {
-    createWorkStationButton : common.createButton,
+    createWorkStationButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
     edit : common.edit,
     delete : common.delete,
     deleteAndYes : common.deleteAndYes,
@@ -70,7 +71,7 @@ const workStation = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstWorkStation : common.firstItem
 }
 
 const qcItem = {
@@ -104,7 +105,7 @@ const customer = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstCustomer : common.firstItem
 }
 
 const storage ={
@@ -120,13 +121,14 @@ const storage ={
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstStorage : common.firstItem,
+    
 }
 
-const producePauseCause = {
-    createProducePauseCausesButton : common.createButton,
-    edit : common.edit,
-    delete : common.delete,
+const pauseCause = {
+    createPauseCausesButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
+    edit : '.link___3gc8F',
+    disabled : '.link___3gc8F',
     deleteAndYes : common.deleteAndYes,
     deleteAndNo : common.deleteAndNo,
     name : common.name,
@@ -134,7 +136,8 @@ const producePauseCause = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstProducePauseCause : common.firstItem,
+    invalidAssert : '.ant-form-explain',
 }
 
 
@@ -147,5 +150,5 @@ module.exports = {
   qcItem,
   customer,
   storage,
-  producePauseCause,
+  pauseCause,
 };

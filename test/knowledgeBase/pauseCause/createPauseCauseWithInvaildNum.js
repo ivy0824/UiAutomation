@@ -4,8 +4,11 @@ const timeout = require('../../../utils/timeout');
 const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
+const element = require('../../../config/element');
 
 const filename = "创建不合法暂停原因";
+const pageUrl = element.pageUrl;
+const pauseCause = element.pauseCause;
 
 let constance;
 describe('#knowledgeBase/createPauseCauseWithInvaildNum', function () {
@@ -26,28 +29,17 @@ describe('#knowledgeBase/createPauseCauseWithInvaildNum', function () {
 			browser
         } = constance;	
 
-        //click knowledgeBase and pausecause
-        try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转暂停原因页面错误');
-            console.error(e);
-                }
-        console.log('进入暂停原因页面');
-    
+        //go to pauseCauses page
+        await event.goToPage(page, pageUrl.pauseCauses, pauseCause.breakCrumb)
         var rand = Math.random().toFixed(6);
         //创建停产原因
-        await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
-        await event.clickAndType(page,'#name',`sRea${rand}`);
+        await event.clickElement(page,pauseCause.createPauseCausesButton,0);
+        await page.screenshot({path: `images/${filename}.png`});
+        await event.clickAndType(page,pauseCause.name,`sRea${rand}`);
         //screenshot
         await page.screenshot({path: `images/${filename}.png`});
         //assert
-        const rēsult = await event.selectElement(page,'.ant-form-explain',0);
+        const rēsult = await event.selectElement(page,pauseCause.invalidAssert,0);
         console.log('rēsult is',rēsult);
         assert.equal(rēsult, '停产原因长度不能超过10个字','rēsult = 停产原因长度不能超过10个字')
         console.log('test end');

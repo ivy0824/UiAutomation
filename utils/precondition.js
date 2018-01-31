@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
+const timeout = require('./timeout');
 const constant = require('../config/constant');
 const event = require('../utils/event');
-const element = require('../test/element');
+const element = require('../config/element');
 const pageUrl = element.pageUrl;
 const common = element.common;
 const unit = element.unit;
@@ -10,7 +11,7 @@ const workStation = element.workStation;
 const qcItem = element.qcItem;
 const customer = element.customer;
 const storage = element.storage;
-const producePauseCauses = element.producePauseCause;
+const pauseCause = element.pauseCause;
 
 const createMaterial = async (page) => {
 	try {
@@ -180,15 +181,16 @@ const createStorage = async (page) => {
 
 const createPauseCause = async (page) => {
     //go to PauseCause page
-    await event.goToPage(page,pageUrl.producePauseCauses,producePauseCause.breakCrumb) 
+    await event.goToPage(page,pageUrl.pauseCauses, pauseCause.breakCrumb) 
     var rand = Math.random().toFixed(3);
     //创建停产原因
-    await event.clickElement(page,producePauseCauses.createProducePauseCausesButton,0);
-    await event.clickAndType(page,producePauseCause.name,`sRea${rand}`);
+    await event.clickElement(page,pauseCause.createPauseCausesButton,0);
+    await timeout(1000);
+    await event.clickAndType(page,pauseCause.name,`sRea${rand}`);
     //submit
-    await event.clickElement(page,producePauseCause.completeButton, 1);
+    await event.clickElement(page,pauseCause.completeButton, 1);
     //wait for 取消按钮 disappear
-    await event.waitForDisappear(page,producePauseCause.cancleButton);
+    await event.waitForDisappear(page,pauseCause.cancleButton);
     return `sRea${rand}`;
 }
 
