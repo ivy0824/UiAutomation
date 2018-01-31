@@ -75,7 +75,7 @@ const workStation = {
 }
 
 const qcItem = {
-    createQcItemButton : common.createButton,
+    createQcItemButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
     edit : common.edit,
     delete : common.delete,
     deleteAndYes : common.deleteAndYes,
@@ -89,12 +89,23 @@ const qcItem = {
     cancleButton : common.cancleButton,
     breakCrumb : common.breakCrumb,
     attationInput : '.ant-input',
-    addAttation : 'anticon.anticon-plus-circle-o.undefined',
-    deleteAttation : '.anticon.anticon-minus-circle-o.delIcon___2mNrC'
+    addAttation : '.anticon.anticon-plus-circle-o.undefined',
+    attationName1 : '#name-1',
+    attationMethod1 : '#method-1',
+    attationStandard1 : '#standard-1',
+    deleteAttation : '.anticon.anticon-minus-circle-o.delIcon___3tBAo',
+    //修改关注点的输入框元素
+    attationName_e : '#name',
+    attationMethod_e : '#method',
+    attationStandard_e : '#standard',
+    //修改分类的元素
+    cancleButton_e : '.link___3gc8F',
+    completeButton_e : '.link___3gc8F',
+    typeName_e : '.ant-input',
 }
 
 const customer = {
-    createCustomerButton : common.createButton,
+    createCustomerButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
     edit : common.edit,
     delete : common.delete,
     deleteAndYes : common.deleteAndYes,

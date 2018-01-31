@@ -31,12 +31,11 @@ describe('#knowledgeBase/createPauseCause', function () {
 
         //go to pauseCauses page
         await event.goToPage(page, pageUrl.pauseCauses, pauseCause.breakCrumb)
-    
         var rand = Math.random().toFixed(3);
         //创建停产原因
         await event.clickElement(page, pauseCause.createPauseCausesButton,0);
         await page.screenshot({path: `images/${filename}.png`});
-        await event.clickAndType(page, pauseCause,name,`sRea${rand}`);
+        await event.clickAndType(page, pauseCause.name,`sRea${rand}`);
         //submit
         await event.clickElement(page, pauseCause.completeButton, 0);
         //wait for 取消按钮 disappear

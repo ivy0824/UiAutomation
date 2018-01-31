@@ -110,6 +110,8 @@ const createAttationType = async (page) => {
     var rand = Math.random().toFixed(3);
     //添加分类
     await event.clickElement(page,qcItem.createQcItemButton, 0);
+    //wait for cancleButton appear
+    await page.waitForSelector(qcItem.cancleButton);
     await event.clickAndType(page,qcItem.typeName,`class${rand}`);        
     //submit
     await event.clickElement(page,qcItem.completeButton, 2);
@@ -124,10 +126,11 @@ const createAttation = async (page) => {
     var rand = Math.random().toFixed(3);
     //add attation
     await event.clickElement(page,qcItem.createQcItemButton, 1);
+    //wait for cancleButton appear
+    await page.waitForSelector(qcItem.cancleButton);
     await event.clickAndType(page,qcItem.attationName,`atta${rand}`);
     await event.clickAndType(page,qcItem.attationMethod,`meth${rand}`);
     await event.clickAndType(page,qcItem.attationStandard,`stand${rand}`);
-    console.log(`add attation is atta${rand}`);
 
     //add one more attation
     // await event.clickElement(page,'.anticon.anticon-plus',2);

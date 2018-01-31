@@ -4,9 +4,12 @@ const timeout = require('../../../utils/timeout');
 const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
+const element = require('../../../config/element');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
 const filename = "创建不合法关注点"
+const pageUrl = element.pageUrl;
+const qcItem = element.qcItem;
 
 let constance;
 describe('#knowledgeBase/createAttaionWithInvaildNum', function () {
@@ -27,30 +30,18 @@ describe('#knowledgeBase/createAttaionWithInvaildNum', function () {
 			browser
         } = constance;	
 
-        //click knowledgeBase and qcItem
-       try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/qcItems", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转质检关注点页面错误');
-            console.error(e);
-                }
-        console.log('进入质检关注点页面')
-
+        //go to qcItem page
+        await event.goToPage(page, pageUrl.qcItems, qcItem.breakCrumb)
         var rand = Math.random().toFixed(6);
         //add attation
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 1);
-        await event.clickAndType(page,'#name-0',`attation${rand}`);
-        await event.clickAndType(page,'#method-0',`methodmethod1${rand}`);
-        await event.clickAndType(page,'#standard-0',`standardstandardstandardstandardstandardstandard${rand}`);
+        await event.clickElement(page, qcItem.createQcItemButton, 1);
+        await page.waitForSelector(qcItem.cancleButton);
+        await event.clickAndType(page,qcItem.attationName,`attation${rand}`);
+        await event.clickAndType(page,qcItem.attationMethod,`methodmethod1${rand}`);
+        await event.clickAndType(page,qcItem.attationStandard,`standardstandardstandardstandardstandardstandard${rand}`);
         console.log(`add attation is atta${rand}`);
-
         //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
+        await event.clickElement(page,qcItem.completeButton, 2);
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });
         //assert
