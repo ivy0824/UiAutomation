@@ -45,7 +45,7 @@ describe('#knowledgeBase/createAttaionWithInvaildNum', function () {
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });
         //assert
-        const rēsult = await page.$eval('.ant-form-explain',x=>x.innerText);
+        const rēsult = await page.$eval(qcItem.invalidAssert,x=>x.innerText);
         console.log('rēsult is',rēsult);
         assert.equal(rēsult, '关注点长度不可超过12个字符','rēsult = 关注点长度不能可过12个字符');
         console.log('test end');

@@ -43,7 +43,7 @@ describe('#knowledgeBase/editAttationTypeWithInvaildNum', function () {
         //screenshot
         await page.screenshot({ path: `images/${filename}.png` });;
         //assert
-        const result = await page.$eval( '.ant-col-20' ,x=>x.innerText);
+        const result = await page.$eval( 'div[style="color: rgb(244, 51, 91);"]' ,x=>x.innerText);
         console.log('result is', result);
         assert.equal(result,'分类长度不可超过12个字符' ,'result = 分类长度不可超过12个字符');
         console.log('test end');
