@@ -5,12 +5,11 @@ const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
 const puppeteer = require('puppeteer');
-const element = require('../../element');
+const element = require('../../../config/element');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
 const filename = "创建单位"
 const pageUrl = element.pageUrl;
-const common = element.common;
 const unit = element.unit;
 
 let constance;

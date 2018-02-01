@@ -5,8 +5,11 @@ const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
 const precondition = require('../../../utils/precondition');
+const element = require('../../../config/element');
 
 const filename = "修改不合法暂停原因";
+const pageUrl = element.pageUrl;
+const pauseCause = element.pauseCause;
 
 let constance;
 describe('#knowledgeBase/editPauseCauseWithInvaildNum', function () {
@@ -27,21 +30,21 @@ describe('#knowledgeBase/editPauseCauseWithInvaildNum', function () {
         } = constance;	
 
      //click knowledgeBase and pausecause
-    const pauseCause = await precondition.createPauseCause(page);
-    console.log('pauseCause is',pauseCause);
+    const pauseCauseName = await precondition.createPauseCause(page);
+    console.log('pauseCauseName is',pauseCauseName);
     //修改前停产原因名称
     const rēsultB = await page.$eval( '.ant-table-row.ant-table-row-level-0>td',x=>x.innerText);
     console.log('resultB is',rēsultB);
     //点击修改按钮
-    await event.clickElement(page,'.anticon.anticon-edit.undefined',0);
+    await event.clickElement(page, pauseCause.edit, 0);
     //wait for 取消按钮 appear
-    await page.waitForSelector('.ant-btn.ant-btn-ghost');
+    await page.waitForSelector(pauseCause.cancleButton);
     //修改停产原因名称
-    await event.clickAndType(page,'#name','ch');
-    //sumnit
-    await event.clickElement(page,'.ant-btn.ant-btn-primary',1);
+    await event.clickAndType(page, pauseCause.name,'ch');
+    //submit
+    await event.clickElement(page, pauseCause.completeButton, 1);
     //wait for 取消按钮 disappear
-    await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
+    await event.waitForDisappear(page,pauseCause.cancleButton);
     //screenshot
     await page.screenshot({path: `images/${filename}.png`});
     //assert
@@ -50,12 +53,11 @@ describe('#knowledgeBase/editPauseCauseWithInvaildNum', function () {
     assert.equal(rēsultA, `${rēsultB}ch`,'rēsult = `${rēsultB}ch`');
 
     //stop pausecause
-    await event.clickElement(page,'.component-link',1);
+    await event.clickElement(page,pauseCause.disabled,1);
     //wait for 确定按钮 appear
-    await page.waitForSelector('.ant-btn.ant-btn-primary.ant-btn-sm');
+    // await page.waitForSelector(pauseCause.deleteAndYes);
     //click 确定按钮 
-    await event.clickElement(page, '.ant-btn.ant-btn-primary.ant-btn-sm',0);
-
+    await event.clickElement(page, pauseCause.deleteAndYes,0);
     console.log('test end');
 
     })

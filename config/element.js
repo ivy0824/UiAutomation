@@ -7,7 +7,7 @@ const pageUrl = {
     workStations : 'https://web-beta.blacklake.cn/knowledgeManagement/workStations',
     customers : 'https://web-beta.blacklake.cn/knowledgeManagement/customers',
     storages : 'https://web-beta.blacklake.cn/knowledgeManagement/storages',
-    producePauseCauses : 'https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses',
+    pauseCauses : 'https://web-beta.blacklake.cn/knowledgeManagement/producePauseCauses',
 
 }
 //单位
@@ -27,10 +27,10 @@ const common = {
     name : '#name',
     note : '#note',
     completeButton : '.ant-btn.ant-btn-primary',
-    cancleButton : 'ant-btn.ant-btn-ghost',
+    cancleButton : '.ant-btn.ant-btn-ghost',
     breakCrumb : '.ant-breadcrumb-link',
     search : '.ant-input',
-    firstUnit : '.ant-table-row.myTableRowBordered.ant-table-row-level-0>td'
+    firstItem : '.ant-table-row.myTableRowBordered.ant-table-row-level-0>td'
 }
 
 // 单位
@@ -46,7 +46,8 @@ const unit = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstUnit : common.firstItem,
+    invalidAssert : '.ant-form-explain'
     // completeButton : `${common.completeButton}.aaaa`,
 
 };
@@ -58,7 +59,7 @@ const productivityStandard = {
 }
 
 const workStation = {
-    createWorkStationButton : common.createButton,
+    createWorkStationButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
     edit : common.edit,
     delete : common.delete,
     deleteAndYes : common.deleteAndYes,
@@ -70,11 +71,11 @@ const workStation = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstWorkStation : common.firstItem
 }
 
 const qcItem = {
-    createQcItemButton : common.createButton,
+    createQcItemButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
     edit : common.edit,
     delete : common.delete,
     deleteAndYes : common.deleteAndYes,
@@ -88,12 +89,24 @@ const qcItem = {
     cancleButton : common.cancleButton,
     breakCrumb : common.breakCrumb,
     attationInput : '.ant-input',
-    addAttation : 'anticon.anticon-plus-circle-o.undefined',
-    deleteAttation : '.anticon.anticon-minus-circle-o.delIcon___2mNrC'
+    addAttation : '.anticon.anticon-plus-circle-o.undefined',
+    attationName1 : '#name-1',
+    attationMethod1 : '#method-1',
+    attationStandard1 : '#standard-1',
+    deleteAttation : '.anticon.anticon-minus-circle-o.delIcon___3tBAo',
+    invalidAssert : '.ant-form-explain',
+    //修改关注点的输入框元素
+    attationName_e : '#name',
+    attationMethod_e : '#method',
+    attationStandard_e : '#standard',
+    //修改分类的元素
+    cancleButton_e : '.link___3gc8F',
+    completeButton_e : '.link___3gc8F',
+    typeName_e : '.ant-input',
 }
 
 const customer = {
-    createCustomerButton : common.createButton,
+    createCustomerButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
     edit : common.edit,
     delete : common.delete,
     deleteAndYes : common.deleteAndYes,
@@ -104,7 +117,8 @@ const customer = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstCustomer : common.firstItem,
+    invalidAssert : '.ant-form-explain',
 }
 
 const storage ={
@@ -120,13 +134,14 @@ const storage ={
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstStorage : common.firstItem,
+    
 }
 
-const producePauseCause = {
-    createProducePauseCausesButton : common.createButton,
-    edit : common.edit,
-    delete : common.delete,
+const pauseCause = {
+    createPauseCausesButton : '.ant-btn.button___3jJ6D.ant-btn-primary',
+    edit : '.link___3gc8F',
+    disabled : '.link___3gc8F',
     deleteAndYes : common.deleteAndYes,
     deleteAndNo : common.deleteAndNo,
     name : common.name,
@@ -134,7 +149,8 @@ const producePauseCause = {
     cancleButton : common.cancleButton,
     search : common.search,
     breakCrumb : common.breakCrumb,
-    firstUnit : common.firstUnit
+    firstProducePauseCause : common.firstItem,
+    invalidAssert : '.ant-form-explain',
 }
 
 
@@ -147,5 +163,5 @@ module.exports = {
   qcItem,
   customer,
   storage,
-  producePauseCause,
+  pauseCause,
 };

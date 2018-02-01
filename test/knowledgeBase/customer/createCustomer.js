@@ -4,8 +4,11 @@ const timeout = require('../../../utils/timeout');
 const init = require('../../../init');
 const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
+const element = require('../../../config/element');
 
 const filename = "创建客户";
+const pageUrl = element.pageUrl;
+const customer = element.customer;
 
 let constance;
 describe('#knowledgeBase/createCustomer', function () {
@@ -26,33 +29,19 @@ describe('#knowledgeBase/createCustomer', function () {
 			browser
         } = constance;	
 
-        //click knowledgeBase and customer
-        try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/customers", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转客户页面错误');
-            console.error(e);
-                }
-        console.log('进入创建客户页面')
-        await page.waitForSelector('.ant-btn.editable-add-btn.ant-btn-primary');
+        //go to customer page
+        await event.goToPage(page,pageUrl.customers,customer.breakCrumb)
         var rand = Math.random().toFixed(3);
         //add customer
-        await event.clickElement(page,'.ant-btn.editable-add-btn.ant-btn-primary',0);
-        await page.waitForSelector('#name');
-        await event.clickAndType(page,'#name',`cust${rand}`);
+        await event.clickElement(page,customer.createCustomerButton,0);
+        await page.waitForSelector(customer.cancleButton);
+        await event.clickAndType(page,customer.name,`cust${rand}`);
         console.log(`customer name is cust${rand}`);
-        await event.clickAndType(page,'#note',`note${rand}`);
-
+        await event.clickAndType(page,customer.note,`note${rand}`);
         //submit
-        await event.clickElement(page,'.ant-btn.ant-btn-primary', 2);
-        
+        await event.clickElement(page,customer.completeButton, 2);       
         //wait for 取消按钮 disappear
-        await event.waitForDisappear(page,'.ant-btn.ant-btn-ghost');
+        await event.waitForDisappear(page,customer.cancleButton);
         //screenshot
         await page.screenshot({path: `images/${filename}.png`});
         //assert
@@ -60,7 +49,6 @@ describe('#knowledgeBase/createCustomer', function () {
         console.log(`result is ${result}`);
         assert.equal(result, `cust${rand}`,'result = `cust${rand}`');
         console.log('test end');
-	
 		})
 
     });

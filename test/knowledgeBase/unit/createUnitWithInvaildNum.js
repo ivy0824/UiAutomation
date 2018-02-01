@@ -6,15 +6,17 @@ const constant = require('../../../config/constant');
 const event = require('../../../utils/event');
 const puppeteer = require('puppeteer');
 const precondition = require('../../../utils/precondition');
+const element = require('../../../config/element');
 
 // const filename = path.resolve(__dirname, __filename.split('.')[0]);
 const filename = "创建不合法单位"
+const pageUrl = element.pageUrl;
+const unit = element.unit;
 
 let constance;
-describe('#knowledgeBase/createUnitWithInvaildNum', function () {
+describe('#knowledgeBase/createUnitWithInvalidNum', function () {
 	before(async() => {
-		constance = await init();
-		
+		constance = await init();	
 	});
 
 	after(async() => {
@@ -30,44 +32,30 @@ describe('#knowledgeBase/createUnitWithInvaildNum', function () {
         } = constance;	
 
         //click knowledgeBase and unit
-        try {
-            await page.goto("https://web-beta.blacklake.cn/knowledgeManagement/units", {
-                timeout: 100000
-            });
-            await page.waitForSelector(".ant-breadcrumb-link", {
-                timeout: 100000
-            });
-        } catch (e) {
-            console.error('跳转单位页面错误');
-            console.error(e);
-				}
-			console.log('进入单位页面')
+        //go to unit page
+        await event.goToPage(page,pageUrl.units,unit.breakCrumb)
 
         //click 创建单位
-        await page.click('.anticon.anticon-plus ');
+        await page.click(unit.createUnitButton);
         await event.changeUrlWait(page);
         var rand = Math.random().toFixed(7);
         //input name and note
-        await event.clickAndType(page, '#name',`unit${rand}`);
+        await event.clickAndType(page, unit.name,`unit${rand}`);
         // await event.clickAndType(page, '#note',`note${rand}`);  
-		await event.clickAndType(page, '#note','我是创建单位的备注我是创建单位的备注我是创建单位的备注我是创建单位的备注我是创建单位的备注我是创建单位的备注');
+		await event.clickAndType(page, unit.note,'我是创建单位的备注我是创建单位的备注我是创建单位的备注我是创建单位的备注我是创建单位的备注我是创建单位的备注');
     
         //screenshot
         // await page.screenshot({ path: `images/${filename}.png` });
         //assert 单位长度验证
-        const rēsult = await page.$eval('.ant-form-explain',x=>x.innerText);
+        const rēsult = await page.$eval(unit.invalidAssert,x=>x.innerText);
         console.log('rēsult is',rēsult);
         assert.equal(rēsult, '单位长度不能超过12个字','rēsult = 单位长度不能超过12个字');
         //assert 备注长度验证
-        const rēsult1 = await event.selectElement(page,'.ant-form-explain',1);
+        const rēsult1 = await event.selectElement(page,unit.invalidAssert,1);
         console.log('rēsult1 is',rēsult1);
         assert.equal(rēsult1, '最多可输入50字，已超出4个字','rēsult = 最多可输入50字，已超出4个字')
         //click cancel
         await page.screenshot({ path: `images/${filename}.png` });
-        await event.clickElement(page,'.ant-btn.ant-btn-ghost',0);
 
     })
-
-    
-
-    });
+});
