@@ -6,7 +6,7 @@ const element = require('../config/element');
 const pageUrl = element.pageUrl;
 const common = element.common;
 const unit = element.unit;
-const productivityStandard = element.productivityStandard;
+const capacityStandard = element.capacityStandard;
 const workStation = element.workStation;
 const qcItem = element.qcItem;
 const customer = element.customer;
@@ -197,6 +197,26 @@ const createPauseCause = async (page) => {
     return `sRea${rand}`;
 }
 
+const createCapacityStandard = async (page) =>{
+    //go to capacityStandard page
+    await event.goToPage(page,pageUrl.capacityStandard,capacityStandard.breakCrumb)
+    // click 工位
+    await event.clickElement(page,'.ant-select-selection__placeholder', 0)
+    //chose 第一个工位
+    await event.clickElement(page,'.ant-select-tree-node-content-wrapper.ant-select-tree-node-content-wrapper-normal',0)
+    var rand = Math.random().toFixed(3);
+    await event.clickAndType(page,'#uph', `uph${rand}`);
+    //新增物料
+    await event.clickElement(page,'.actionButtonContainer___1-xWx',0)
+    //点击物料button，显示右侧边栏,选取物料
+    await event.clickElement(page,'.ant-checkbox-inner',0);
+    await event.clickElement(page,'.ant-checkbox-inner',1);
+    //点击保存
+    await event.clickElement(page,'.ant-btn.ant-btn-primary',0);
+    await event.changeUrlWait(page);
+    return `uph${rand}`;
+}
+
 module.exports = {
     createMaterial,
     createUnit,
@@ -206,4 +226,5 @@ module.exports = {
     createCustomer,
     createStorage,
     createPauseCause, 
+    createCapacityStandard
 };

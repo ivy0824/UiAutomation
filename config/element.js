@@ -2,7 +2,7 @@
 const pageUrl = {
     materials : 'https://web-beta.blacklake.cn/bom/materials/list',
     units :  'https://web-beta.blacklake.cn/knowledgeManagement/units',
-    productivityStandards : 'https://web-beta.blacklake.cn/knowledgeManagement/productivityStandards',
+    capacityStandard : 'https://web-beta.blacklake.cn/knowledgeManagement/productivityStandards',
     qcItems : 'https://web-beta.blacklake.cn/knowledgeManagement/qcItems',
     workStations : 'https://web-beta.blacklake.cn/knowledgeManagement/workStations',
     customers : 'https://web-beta.blacklake.cn/knowledgeManagement/customers',
@@ -52,10 +52,23 @@ const unit = {
 
 };
 //产能标准
-const productivityStandard = {
-    createProductivityStandardButton : common.createButton,
-    edit : '.anticon.anticon-edit.undefined',
-    delete : '.anticon.anticon-delete.undefined',
+const capacityStandard = {
+    createCapacityStandard : common.createButton,
+    edit : common.edit,
+    delete : common.delete,
+    deleteAndYes : common.deleteAndYes,
+    deleteAndNo : common.deleteAndNo,
+    breakCrumb : common.breakCrumb,
+    cancelButton:common.cancleButton,
+    workStationName:'ant-form-item-required',
+    workStationDefualtDisplay:'ant-select-selection__placeholder',
+    submitButtonContent:'ant-btn ant-btn-primary',
+    completeButton :common.completeButton,
+    errorInformation:'.ant-form-explain',
+    firstWorkStation:'.ant-select-tree-node-content-wrapper.ant-select-tree-node-content-wrapper-normal',
+    firstWorkStationName:'ant-select-selection-selected-value',
+    addMaterialButton:'.actionButtonContainer___1-xWx',
+    choseMaterial:'.ant-checkbox-inner',
 }
 
 const workStation = {
@@ -158,7 +171,7 @@ module.exports = {
   pageUrl,
   common,
   unit,
-  productivityStandard,
+  capacityStandard,
   workStation,
   qcItem,
   customer,
