@@ -4,7 +4,7 @@ const init=require('../../../init');
 const event=require('../../../utils/event');
 const timeout=require('../../../utils/timeout');
 const {assert}=require('chai');
-const element = require('../../element');
+const element = require('../../../config/element');
 const public=require('../../../utils/public.js');
 
 const pageUrl = element.pageUrl;
